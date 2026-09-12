@@ -10,10 +10,13 @@
     "build": "vite build",
     "start": "npm run build && PORT=3000 node server/index.mjs",
     "preview": "vite preview",
-    "lint": "tsc --noEmit"
+    "lint": "tsc --noEmit",
+    "verify:store": "node scripts/verify-store.mjs",
+    "verify:platform": "node scripts/verify-platform.mjs"
   },
   "dependencies": {
     "@google/genai": "^2.4.0",
+    "@tailwindcss/vite": "^4.1.14",
     "@tailwindcss/vite": "^4.1.14",
     "@vitejs/plugin-react": "^5.0.4",
     "lucide-react": "^0.546.0",
