@@ -16,5 +16,7 @@ jobs:
       - run: npm install
       - run: npm run lint
       - run: npm run build
+      - run: npm audit --audit-level=high
+      - run: node scripts/verify-store.mjs
       - run: node scripts/verify-platform.mjs
       - run: node scripts/verify-files.mjs
