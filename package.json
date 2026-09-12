@@ -6,8 +6,9 @@
   "scripts": {
     "dev": "vite --port=3000 --host=0.0.0.0",
     "server": "node server/index.mjs",
+    "dev:full": "node server/index.mjs & vite --port=3000 --host=0.0.0.0",
     "build": "vite build",
-    "start": "npm run build && node server/index.mjs",
+    "start": "npm run build && PORT=3000 node server/index.mjs",
     "preview": "vite preview",
     "lint": "tsc --noEmit"
   },
