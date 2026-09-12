@@ -1,0 +1,6 @@
+{
+  "name": "AI Nexus",
+  "description": "Professional, provider-agnostic AI platform for orchestrating multiple AI providers, models, assistants, and workflows.",
+  "requestFramePermissions": ["microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
