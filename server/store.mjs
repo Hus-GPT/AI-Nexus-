@@ -50,5 +50,14 @@ export async function listEntities(type) { return (await readStore())[type] || [
 export async function getEntity(type, id) { return (await readStore())[type]?.find((x) => x.id === id) || null; }
 export async function upsertEntity(type, entity) { const s = await readStore(); if (!Array.isArray(s[type])) s[type] = []; s[type] = s[type].filter((x) => x.id !== entity.id); s[type].push(entity); await writeStore(s); return entity; }
 export async function deleteEntity(type, id) { const s = await readStore(); if (Array.isArray(s[type])) s[type] = s[type].filter((x) => x.id !== id); await writeStore(s); return true; }
-export async function appendAudit(entry) { const s = await readStore(); s.audit.push({ id: crypto.randomUUID(), at: new Date().toISOString(), ...entry }); await writeStore(s); }
+
+export async function appendAudit(actionOrEntry, entityId, details = {}, severity = 'info') {
+  const entry = typeof actionOrEntry === 'object' && actionOrEntry !== null
+    ? { ...actionOrEntry }
+    : { action: String(actionOrEntry), entityId: entityId ?? null, details, severity };
+  const s = await readStore();
+  s.audit.push({ id: crypto.randomUUID(), at: new Date().toISOString(), ...entry });
+  await writeStore(s);
+}
+
 export async function listAudit() { return (await readStore()).audit; }
