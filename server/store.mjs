@@ -22,6 +22,12 @@ function decrypt(payload) {
 
 const EMPTY_STORE = { accounts: [], conversations: [], projects: [], assistants: [], memories: [], files: [], artifacts: [], tasks: [], notifications: [], audit: [], tools: [] };
 
+function withoutSecret(account) {
+  if (!account) return null;
+  const { secret: _secret, apiKey: _apiKey, ...safe } = account;
+  return safe;
+}
+
 export async function readStore() {
   try { return decrypt(await fs.readFile(STORE_FILE, 'utf8')); }
   catch (error) { if (error.code === 'ENOENT') return structuredClone(EMPTY_STORE); throw error; }
@@ -34,9 +40,9 @@ export async function writeStore(store) {
   await fs.rename(temp, STORE_FILE);
 }
 
-export async function listAccounts() { return (await readStore()).accounts; }
+export async function listAccounts() { return (await readStore()).accounts.map(withoutSecret); }
 export async function getAccount(id) { return (await readStore()).accounts.find((x) => x.id === id) || null; }
-export async function saveAccount(account) { const s = await readStore(); s.accounts = s.accounts.filter((x) => x.id !== account.id); s.accounts.push(account); await writeStore(s); return account; }
+export async function saveAccount(account) { const s = await readStore(); s.accounts = s.accounts.filter((x) => x.id !== account.id); s.accounts.push(account); await writeStore(s); return withoutSecret(account); }
 export async function deleteAccount(id) { const s = await readStore(); s.accounts = s.accounts.filter((x) => x.id !== id); await writeStore(s); return true; }
 export async function appendConversation(turn) { const s = await readStore(); s.conversations.push(turn); await writeStore(s); return turn; }
 export async function listConversations() { return (await readStore()).conversations; }
